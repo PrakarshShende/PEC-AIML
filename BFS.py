@@ -1,47 +1,29 @@
-def bfs(graph, start, goal):
+from collections import deque
 
-    OPEN = [start]
-    CLOSED = []
-    traversal = []
+def bfs(graph, start):
+    visited = set()
+    queue = deque([start])
 
-    while OPEN:
+    while queue:
+        node = queue.popleft()
 
-        # Remove the leftmost node from OPEN
-        x = OPEN.pop(0)
+        if node not in visited:
+            print(node, end=" ")
+            visited.add(node)
 
-        # Add node to traversal
-        traversal.append(x)
-
-        # Check if goal is reached
-        if x == goal:
-            print("BFS Traversal:", " → ".join(traversal))
-            print("Goal found:", x)
-            return
-
-        # Add current node to CLOSED
-        if x not in CLOSED:
-            CLOSED.append(x)
-
-            # Get children of current node
-            children = graph[x]
-
-            # Add children to RIGHT of OPEN
-            for child in children:
-
-                if child not in OPEN and child not in CLOSED:
-                    OPEN.append(child)
-
-    print("Goal not found")
+            for neighbor in graph[node]:
+                if neighbor not in visited:
+                    queue.append(neighbor)
 
 
-# Tree
 graph = {
     'A': ['B', 'C'],
     'B': ['D', 'E'],
-    'C': [],
+    'C': ['F'],
     'D': [],
-    'E': []
+    'E': ['F'],
+    'F': []
 }
 
-# Call BFS
-bfs(graph, 'A', 'E')
+print("BFS Traversal:")
+bfs(graph, 'A')
